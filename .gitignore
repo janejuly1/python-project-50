@@ -1,0 +1,6 @@
+.venv/
+/.idea
+*.cast
+*.pyc
+__pycache__
+/dist
