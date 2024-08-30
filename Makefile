@@ -1,8 +1,11 @@
 
-setup: install install pyyaml build publish package-install lint gendiff
+setup: install test lint selfcheck check build
 
 install:
 	poetry install
+
+test:
+	poetry run pytest
 
 install pyyaml:
 	pip install pyyaml
@@ -21,3 +24,14 @@ lint:
 
 gendiff:
 	poetry run gendiff
+
+lint:
+	poetry run flake8 --extend-ignore=C901 gendiff
+
+selfcheck:
+	poetry check
+
+check: selfcheck test lint
+
+build: check
+	poetry build

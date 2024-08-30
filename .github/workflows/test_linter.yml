@@ -26,4 +26,4 @@ jobs:
           make install
 
       - name: test linter
-        run: run lint
+        run: make check
