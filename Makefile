@@ -1,8 +1,11 @@
 
-setup: install build publish package-install
+setup: install install pyyaml build publish package-install lint gendiff
 
 install:
 	poetry install
+
+install pyyaml:
+	pip install pyyaml
 
 build:
 	poetry build
