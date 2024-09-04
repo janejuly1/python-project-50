@@ -2,6 +2,9 @@
 import argparse
 import json
 import yaml
+from formatters.plain import format_plain
+from formatters.stylish import stylish_diff
+
 
 
 def gendiff():
@@ -48,55 +51,19 @@ def compare_dicts(dict1, dict2):
     return diff
 
 
-def format_diff(diff):
-    lines = []
-    for key in diff:
-        if diff[key]['status'] == 'added':
-            lines.append(f'  + {key}: {diff[key]["value"]}')
-        elif diff[key]['status'] == 'removed':
-            lines.append(f'  - {key}: {diff[key]["value"]}')
-        elif diff[key]['status'] == 'changed':
-            lines.append(f'  - {key}: {diff[key]["old_value"]}')
-            lines.append(f'  + {key}: {diff[key]["new_value"]}')
-        elif diff[key]['status'] == 'nested':
-            lines.append(f'  {key}: {format_diff(diff[key]["value"])})')
-    return '\n'.join(lines)
-
-
-def generate_diff(filepath1, filepath2):
+def generate_diff(filepath1, filepath2, format_name='stylish'):
     dict1 = load_file(filepath1)
     dict2 = load_file(filepath2)
 
     diff = compare_dicts(dict1, dict2)
 
-    output = '{\n' + format_diff(diff) + '\n}'
-    return output
+    if format_name == 'plain':
+        return format_plain(diff)
+    elif format_name == 'stylish':
+        return stylish_diff(diff)
 
-# def generate_diff(file1, file2):
-#     with open(file1) as f1, open(file2) as f2:
-#         data1 = json.load(f1)
-#         data2 = json.load(f2)
-#
-#     diff = []
-#
-#     keys = set(data1.keys()).union(data2.keys())
-#
-#     for key in sorted(keys):
-#         if key not in data2:
-#             diff.append(f"- {key}: {data1[key]}")
-#         elif key not in data1:
-#             diff.append(f"+ {key}: {data2[key]}")
-#         elif data1[key] != data2[key]:
-#             diff.append(f"- {key}: {data1[key]}")
-#             diff.append(f"+ {key}: {data2[key]}")
-#         elif data1[key] == data2[key]:
-#             diff.append(f"  {key}: {data1[key]}")
-#         else:
-#             if isinstance(data1[key], dict) and isinstance(data2[key], dict):
-#                 nested_diff = generate_diff(data1[key], data2[key])
-#
-#     ret = "\n".join(diff)
-#     return "{\n" + ret + "\n}"
+    output = '{\n' + stylish_diff(diff) + '\n}'
+    return output
 
 
 if __name__ == '__main__':
