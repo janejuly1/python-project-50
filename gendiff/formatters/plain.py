@@ -1,4 +1,12 @@
 def format_plain(diff):
+
+    def format_value(value):
+        if isinstance(value, dict):
+            return '[complex value]'
+        elif isinstance(value, str):
+            return f"'{value}'"
+        return value
+
     result = []
 
     def recurse(cur_path, changes):
@@ -18,11 +26,3 @@ def format_plain(diff):
 
     recurse('', diff)
     return '\n'.join(result)
-
-
-def format_value(value):
-    if isinstance(value, dict):
-        return '[complex value]'
-    elif isinstance(value, str):
-        return f"'{value}'"
-    return value
