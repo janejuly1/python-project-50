@@ -1,5 +1,5 @@
 
-setup: install test lint selfcheck check build
+setup: install test build lint
 
 install:
 	poetry install
@@ -20,18 +20,4 @@ package-install:
 	python3 -m pip install --force-reinstall --user dist/*.whl
 
 lint:
-	poetry run flake8
-
-gendiff:
-	poetry run gendiff
-
-lint:
-	poetry run flake8 --extend-ignore=C901 gendiff
-
-selfcheck:
-	poetry check
-
-check: selfcheck test lint
-
-build: check
-	poetry build
+	poetry run flake8 gendiff
