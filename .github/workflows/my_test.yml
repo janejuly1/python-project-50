@@ -24,3 +24,6 @@ jobs:
 
       - name: test linter
         run: make lint
+
+      - name: run tests
+        run: make test
