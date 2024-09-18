@@ -1,6 +1,6 @@
 import pytest
 from tests import get_path
-from ..gendiff import generate_diff
+from ..gendiff.scripts.gendiff import generate_diff
 
 @pytest.mark.parametrize('file1, file2, format_name, expected,'
                          [
