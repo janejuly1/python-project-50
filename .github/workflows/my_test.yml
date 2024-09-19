@@ -16,7 +16,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install poetry
+          pip install poetry pytest
           make install
 
       - name: install flake8
