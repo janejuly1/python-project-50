@@ -20,4 +20,9 @@ def compare_dicts(dict1, dict2):
                     'old_value': dict1[key],
                     'new_value': dict2[key]
                 }
+            else:
+                diff[key] = {
+                    'status': 'unchanged',
+                    'value': dict1[key]
+                }
     return diff

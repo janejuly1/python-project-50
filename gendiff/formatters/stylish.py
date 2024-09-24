@@ -1,7 +1,11 @@
 def stylish_diff(diff):
     def format_value(value):
-        if isinstance(value, dict):
+        if isinstance(value, dict) and 'status' in value:
             return '{\n' + stylish_diff(value) + '\n}'
+
+        if isinstance(value, bool):
+            value = str(value).lower()
+
         return value
 
     lines = []
