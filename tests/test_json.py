@@ -1,57 +1,24 @@
+import os
+import json
 import pytest
 from tests import get_path
 from gendiff.scripts.gendiff import generate_diff
 
 
-@pytest.mark.parametrize('file1, file2, format_name, expected,',
-                         [
-                             pytest.param(
-                                 'file1.json',
-                                 'file2.json',
-                                 'stylish',
-                                 'result.txt',
-                                 id="json_file"
-                             ),
-                             pytest.param(
-                                 'file1.yaml',
-                                 'file2.yaml',
-                                 'stylish',
-                                 'correct_result.txt',
-                                 id="yaml_file"
-                             ),
-                             pytest.param(
-                                 'file1.yaml',
-                                 'file2.json',
-                                 'stylish',
-                                 'result.txt',
-                                 id="mix_file"
-                             ),
-                             pytest.param(
-                                 'empty_file.json',
-                                 'empty_file.json',
-                                 'stylish',
-                                 'result_empty.txt',
-                                 id="empty_file"
-                             ),
-                             pytest.param(
-                                 'file1.yaml',
-                                 'file2.yaml',
-                                 'plain',
-                                 'result_plain.txt',
-                                 id="plain"
-                             ),
-                             pytest.param(
-                                 'file1.json',
-                                 'file2.json',
-                                 'json',
-                                 'result_json.txt',
-                                 id="json"
-                             ),
-                         ])
-def test_generate_diff(file1, file2, format_name, expected):
-    expected_path = get_path(expected)
-    with open(expected_path, 'r') as file:
-        result = file.read()
-        test_path1 = get_path(file1)
-        test_path2 = get_path(file2)
-        assert generate_diff(test_path1, test_path2, format_name) == result
+def test_generate_diff():
+    data_1 = 'tests/fixtures/file1.json'
+    data_2 = 'tests/fixtures/file2.json'
+    data_3 = 'tests/fixtures/file1.yml'
+    data_4 = 'tests/fixtures/file2.yml'
+
+    result_stylish = \
+        open('tests/fixtures/result_stylish.txt').read()
+    result_plain = \
+        open('tests/fixtures/result_plain.txt').read()
+    result_json = \
+        open('tests/fixtures/result_json.txt').read()
+
+    assert generate_diff(data_1, data_2, 'stylish') == result_stylish
+    assert generate_diff(data_1, data_2) == result_stylish
+    assert generate_diff(data_1, data_2, 'plain') == result_plain
+    assert generate_diff(data_1, data_2, 'json') == result_json

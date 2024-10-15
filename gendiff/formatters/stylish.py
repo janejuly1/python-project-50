@@ -1,25 +1,55 @@
-def stylish_diff(diff):
-    def format_value(value):
-        if isinstance(value, dict) and 'status' in value:
-            return '{\n' + stylish_diff(value) + '\n}'
+def build_indent(depth):
+    return ' ' * (depth * 4 - 2)
 
-        if isinstance(value, bool):
-            value = str(value).lower()
 
-        return value
+def format_value(value, depth):
+    if isinstance(value, dict):
+        lines = [
+            f"{build_indent(depth + 1)}  {key}: {format_value(val, depth + 1)}"
+            for key, val in value.items()
+        ]
+        return f"{{\n{'\n'.join(lines)}\n{build_indent(depth)}}}"
+    elif isinstance(value, list):
+        lines = [
+            f"{build_indent(depth + 1)}- {format_value(val, depth + 1)}"
+            for val in value
+        ]
+        return f"[\n{'\n'.join(lines)}\n{build_indent(depth)}]"
+    return stringify(value)
+
+
+def stringify(data):
+    if isinstance(data, bool):
+        return 'true' if data else 'false'
+    if data is None:
+        return 'null'
+    return str(data)
+
+
+def format_dict(diff, depth=1):
+    if not isinstance(diff, dict):
+        return str(diff)
 
     lines = []
-    for key, change in diff.items():
-        if change['status'] == 'added':
-            lines.append(f'  + {key}: {format_value(change["value"])}')
-        elif change['status'] == 'removed':
-            lines.append(f'  - {key}: {format_value(change["value"])}')
-        elif change['status'] == 'changed':
-            lines.append(f'  - {key}: {format_value(change["old_value"])}')
-            lines.append(f'  + {key}: {format_value(change["new_value"])}')
-        elif change['status'] == 'nested':
-            lines.append(f'  {key}: {stylish_diff(change["value"])}')
-        elif change['status'] == 'unchanged':
-            lines.append(f'    {key}: {format_value(change["value"])}')
+    for item in diff:
+        key = item['key']
+        status = item['status']
+        value = item['value']
+        indent = build_indent(depth)
+
+        if status == 'added':
+            lines.append(f"{indent}+ {key}: {format_value(value, depth)}")
+        elif status == 'removed':
+            lines.append(f"{indent}- {key}: {format_value(value, depth)}")
+        elif status == 'changed':
+            old_value, new_value = value
+            lines.append(f"{indent}- {key}: {format_value(old_value, depth)}")
+            lines.append(f"{indent}+ {key}: {format_value(new_value, depth)}")
+        elif status == 'unchanged':
+            lines.append(f"{indent}  {key}: {format_value(value, depth)}")
 
     return '\n'.join(lines)
+
+
+def stylish_diff(diff):
+    return '\n' + format_dict(diff) + '\n'
