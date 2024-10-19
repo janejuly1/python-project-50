@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from ..formatters.plain import format_plain
-from ..formatters.stylish import stylish_diff
-from ..formatters.json_formatter import json_formatter
-from ..data_converter import load_file
-from ..cli import parse_params
-from ..compare_files import compare_dicts
+from gendiff.formatters.plain import format_plain
+from gendiff.formatters.stylish import stylish_diff
+from gendiff.formatters.json_formatter import json_formatter
+from gendiff.data_converter import load_file
+from gendiff.cli import parse_params
+from gendiff.compare_files import compare_dicts
 
 
 FORMATTERS = {
