@@ -5,25 +5,34 @@ def stylish_diff(diff):
 
 def tree_view(diff, depth=1):
     lines = []
-    for key, (type, value) in sorted(diff.items()):
-        lines = create_formatted_line(lines, key, value, depth, type)
+    for key, value in sorted(diff.items()):
+        status = value.get('status')
+
+        if 'value' in value:
+            v = value['value']
+        elif 'old_value' in value and 'new_value' in value:
+            v = (value['old_value'], value['new_value'])
+        else:
+            v = None
+
+        lines = create_formatted_line(lines, key, v, depth, status)
     result = '\n'.join(lines)
     return result
 
 
-def create_formatted_line(lines, key, value, depth, type):
+def create_formatted_line(lines, key, value, depth, status):
     prefix = '  '
-    if type == 'nested':
-        indent = (4 * depth - 2) * ' '
+    if status == 'nested':
+        lines.append(f"{' ' * (4 * depth)}{key}: {{")
         child_diff = tree_view(value, depth + 1)
-        formated_value = f'{{\n{child_diff}\n{indent}  }}'
-        lines = add_indent_and_format(depth, lines, prefix, key, formated_value)
-    elif type == 'changed':
+        lines.append(child_diff)
+        lines.append(f"{' ' * (4 * depth)}}}")
+    elif status == 'changed':
         lines = changed_data_diff(lines, value, depth, key)
-    elif type == 'added':
+    elif status == 'added':
         prefix = '+ '
         lines = add_indent_and_format(depth, lines, prefix, key, value)
-    elif type == 'removed':
+    elif status == 'removed':
         prefix = '- '
         lines = add_indent_and_format(depth, lines, prefix, key, value)
     else:
@@ -55,7 +64,7 @@ def format_value(value, depth):
         return 'null'
     elif isinstance(value, str):
         return value
-    return str(value)
+    return value
 
 
 def changed_data_diff(lines, value, depth, key):
