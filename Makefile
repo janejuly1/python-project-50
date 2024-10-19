@@ -7,7 +7,7 @@ install:
 test:
 	poetry run pytest
 
-install pyyaml:
+install_pyyaml:
 	pip install pyyaml
 
 build:
