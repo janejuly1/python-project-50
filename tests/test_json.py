@@ -2,7 +2,6 @@ import pytest
 from gendiff.scripts.gendiff import generate_diff
 
 
-
 @pytest.mark.parametrize("file1, file2, formatter, expected", [
     ("tests/fixtures/file1.json", "tests/fixtures/file2.json", 'plain',
      "tests/fixtures/result_plain.txt"),
