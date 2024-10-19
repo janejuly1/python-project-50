@@ -75,8 +75,7 @@ def format_added_property(value, full_key):
     else:
         value_description = str(value).lower()
     message = (
-            f"Property '{full_key}' was added "
-            + f"with value: {value_description}"
+        f"Property \'{full_key}\' was added with value: {value_description}"
     )
     return message
 
@@ -97,7 +96,6 @@ def format_changed_property(value, full_key):
     else:
         new_value = str(new).lower()
     message = (
-            f"Property '{full_key}' was updated. "
-            + f"From {old_value} to {new_value}"
+        f"Property \'{full_key}\' was updated. From {old_value} to {new_value}"
     )
     return message
