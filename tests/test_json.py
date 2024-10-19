@@ -1,24 +1,26 @@
-import os
-import json
 import pytest
-from tests import get_path
 from gendiff.scripts.gendiff import generate_diff
 
 
-def test_generate_diff():
-    data_1 = 'tests/fixtures/file1.json'
-    data_2 = 'tests/fixtures/file2.json'
-    data_3 = 'tests/fixtures/file1.yml'
-    data_4 = 'tests/fixtures/file2.yml'
 
-    result_stylish = \
-        open('tests/fixtures/result_stylish.txt').read()
-    result_plain = \
-        open('tests/fixtures/result_plain.txt').read()
-    result_json = \
-        open('tests/fixtures/result_json.txt').read()
+@pytest.mark.parametrize("file1, file2, formatter, expected", [
+    ("tests/fixtures/file1.json", "tests/fixtures/file2.json", 'plain',
+     "tests/fixtures/result_plain.txt"),
+    ("tests/fixtures/file1.json", "tests/fixtures/file2.json", 'stylish',
+     "tests/fixtures/result_stylish.txt"),
+    ("tests/fixtures/file1.yml", "tests/fixtures/file2.yml", 'stylish',
+     "tests/fixtures/result_stylish.txt"),
+    ("tests/fixtures/file1.yml", "tests/fixtures/file2.yml", 'plain',
+     "tests/fixtures/result_plain.txt"),
+    ("tests/fixtures/file1.json", "tests/fixtures/file2.json", 'json',
+     "tests/fixtures/result_json.json"),
+])
+def test_generate_diff(file1, file2, formatter, expected):
+    diff = generate_diff(file1, file2, formatter)
+    expected_result = read_file(expected)
+    assert diff == expected_result
 
-    assert generate_diff(data_1, data_2, 'stylish') == result_stylish
-    assert generate_diff(data_1, data_2) == result_stylish
-    assert generate_diff(data_1, data_2, 'plain') == result_plain
-    assert generate_diff(data_1, data_2, 'json') == result_json
+
+def read_file(file_name):
+    with open(file_name, 'r') as file:
+        return file.read().strip()

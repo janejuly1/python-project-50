@@ -2,9 +2,17 @@
 
 from ..formatters.plain import format_plain
 from ..formatters.stylish import stylish_diff
+from ..formatters.json_formatter import json_formatter
 from ..data_converter import load_file
 from ..cli import pars_params
 from ..compare_files import compare_dicts
+
+
+FORMATTERS = {
+    'stylish': stylish_diff,
+    'plain': format_plain,
+    'json': json_formatter
+}
 
 
 def generate_diff(filepath1, filepath2, format_name='stylish'):
@@ -13,12 +21,10 @@ def generate_diff(filepath1, filepath2, format_name='stylish'):
 
     diff = compare_dicts(dict1, dict2)
 
-    if format_name == 'plain':
-        return format_plain(diff)
-    elif format_name == 'stylish':
-        return stylish_diff(diff)
+    if isinstance(format_name, str):
+        format_name = FORMATTERS[format_name]
 
-    output = '{\n' + stylish_diff(diff) + '\n}'
+    output = format_name(diff)
     return output
 
 
