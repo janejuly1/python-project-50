@@ -1,5 +1,5 @@
 
-setup: install build lint test
+setup: install install_pyyaml build lint test
 
 install:
 	poetry install
