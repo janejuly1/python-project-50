@@ -1,14 +1,11 @@
 
-setup: install install_pyyaml build lint test
+setup: install build lint test
 
 install:
 	poetry install
 
 test:
 	poetry run pytest
-
-install_pyyaml:
-	pip install pyyaml
 
 build:
 	poetry build
