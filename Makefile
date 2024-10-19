@@ -1,5 +1,5 @@
 
-setup: install test build lint
+setup: install build lint test
 
 install:
 	poetry install
