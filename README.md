@@ -1,5 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/janejuly1/python-project-50/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/janejuly1/python-project-50/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f541d31e49d5880a528d/maintainability)](https://codeclimate.com/github/janejuly1/python-project-50/maintainability)
 
 Gendiff is the program generates differences between JSON and YAML files.
 [![asciicast](https://asciinema.org/a/qLH2fw6j0N0qwQisOjEYcRSto.svg)](https://asciinema.org/a/qLH2fw6j0N0qwQisOjEYcRSto)
