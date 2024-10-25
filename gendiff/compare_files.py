@@ -1,28 +1,29 @@
-#!/usr/bin/env python3
-
-
 def compare_dicts(dict1, dict2):
     diff = {}
-    keys = set(dict1.keys()).union(dict2.keys())
+    keys = set(dict1) | set(dict2)
+
     for key in keys:
-        if key in dict1 and key not in dict2:
-            diff[key] = {'status': 'removed', 'value': dict1[key]}
-        elif key not in dict1 and key in dict2:
-            diff[key] = {'status': 'added', 'value': dict2[key]}
+        value1 = dict1.get(key)
+        value2 = dict2.get(key)
+
+        if key not in dict1:
+            diff[key] = {'status': 'added', 'value': value2}
+        elif key not in dict2:
+            diff[key] = {'status': 'removed', 'value': value1}
+        elif isinstance(value1, dict) and isinstance(value2, dict):
+            nested_diff = compare_dicts(value1, value2)
+            if nested_diff:
+                diff[key] = {'status': 'nested', 'value': nested_diff}
+        elif value1 != value2:
+            diff[key] = {
+                'status': 'changed',
+                'old_value': value1,
+                'new_value': value2
+            }
         else:
-            if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
-                nested_diff = compare_dicts(dict1[key], dict2[key])
-                if nested_diff:
-                    diff[key] = {'status': 'nested', 'value': nested_diff}
-            elif dict1[key] != dict2[key]:
-                diff[key] = {
-                    'status': 'changed',
-                    'old_value': dict1[key],
-                    'new_value': dict2[key]
-                }
-            else:
-                diff[key] = {
-                    'status': 'unchanged',
-                    'value': dict1[key]
-                }
+            diff[key] = {
+                'status': 'unchanged',
+                'value': value1
+            }
+
     return diff
