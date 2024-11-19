@@ -1,12 +1,24 @@
 #!/usr/bin/env python3
 import json
 import yaml
+from os.path import splitext
+
+
+EXTENSIONS = ('yaml', 'yml', 'json')
 
 
 def load_file(file_path):
-    if file_path.endswith('.json'):
-        with open(file_path, 'r') as file:
-            return json.load(file)
-    elif file_path.endswith('.yaml') or file_path.endswith('.yml'):
-        with open(file_path, 'r') as file:
-            return yaml.safe_load(file)
+    extension = splitext(file_path)[1][1:]
+    with open(file_path, 'r') as file:
+        content = file.read()
+        return content, extension
+
+
+def parse_data(file_path):
+    (content, extension) = load_file(file_path)
+    if extension == 'json':
+        return json.loads(content)
+    elif extension == 'yaml' or extension == 'yml':
+        return yaml.load(content, Loader=yaml.Loader)
+    else:
+        raise ValueError(f'File {file_path} does not end with {extension}')

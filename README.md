@@ -1,5 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/janejuly1/python-project-50/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/janejuly1/python-project-50/actions)
+[![Check_my_Actions](https://github.com/janejuly1/python-project-50/actions/workflows/my_test.yml/badge.svg)](https://github.com/janejuly1/python-project-50/actions)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f541d31e49d5880a528d/test_coverage)](https://codeclimate.com/github/janejuly1/python-project-50/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f541d31e49d5880a528d/maintainability)](https://codeclimate.com/github/janejuly1/python-project-50/maintainability)
 
 ## Description
@@ -11,6 +13,7 @@ To install, clone the repository and install using `poetry`:
 
 ```sh
 git clone https://github.com/janejuly1/python-project-50.git
+cd gendiff
 poetry install
 ```
 

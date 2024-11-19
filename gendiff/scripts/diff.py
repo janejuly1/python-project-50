@@ -1,7 +1,7 @@
 from gendiff.formatters.plain import format_plain
 from gendiff.formatters.stylish import stylish_diff
 from gendiff.formatters.json_formatter import json_formatter
-from gendiff.data_converter import load_file
+from gendiff.data_converter import parse_data
 from gendiff.compare_files import compare_dicts
 
 
@@ -13,8 +13,8 @@ FORMATTERS = {
 
 
 def generate_diff(filepath1, filepath2, format_name='stylish'):
-    dict1 = load_file(filepath1)
-    dict2 = load_file(filepath2)
+    dict1 = parse_data(filepath1)
+    dict2 = parse_data(filepath2)
 
     diff = compare_dicts(dict1, dict2)
 

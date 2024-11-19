@@ -6,7 +6,10 @@ from .diff import generate_diff
 
 def main():
     args = parse_params()
-    diff = generate_diff(args.first_file, args.second_file, args.format)
+    try:
+        diff = generate_diff(args.first_file, args.second_file, args.format)
+    except ValueError:
+        print('File does not end with right extension')
     print(diff)
 
 
