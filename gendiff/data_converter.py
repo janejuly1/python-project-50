@@ -17,6 +17,7 @@ def load_file(file_path):
 
 
 def check_file(content, extension):
+    content, extension = load_file(content)
     if extension == 'json':
         return json.loads(content)
     elif extension == 'yaml' or extension == 'yml':
@@ -24,3 +25,5 @@ def check_file(content, extension):
 
 
 def parse_data(file_path):
+    file_format = splitext(file_path)[1][1:]
+    return check_file(file_path, file_format)
